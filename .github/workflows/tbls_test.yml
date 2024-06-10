@@ -14,17 +14,6 @@ jobs:
       DB_DATABASE: testdb
       DB_USERNAME: root
       DB_PASSWORD: root
-    # services:
-    #   mysql:
-    #     image: mysql:8.0
-    #     env:
-    #       MYSQL_ROOT_PASSWORD: $DB_PASSWORD
-    #       MYSQL_DATABASE: $DB_DATABASE
-    #       MYSQL_USER: $DB_USERNAME
-    #       MYSQL_PASSWORD: $DB_PASSWORD
-    #     ports:
-    #       - 3306:3306
-    #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Create Database
         run: |
@@ -42,4 +31,4 @@ jobs:
         uses: k1low/setup-tbls@v1
 
       - name: Generate DB schema document
-        run: tbls doc -f
+        run: tbls doc -f mysql://$DB_USERNAME:$DB_PASSWORD@$DB_HOST/$DB_DATABASE
