@@ -14,20 +14,21 @@ jobs:
       DB_DATABASE: testdb
       DB_USERNAME: root
       DB_PASSWORD: root
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: $DB_PASSWORD
-          MYSQL_DATABASE: $DB_DATABASE
-          MYSQL_USER: $DB_USERNAME
-          MYSQL_PASSWORD: $DB_PASSWORD
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    # services:
+    #   mysql:
+    #     image: mysql:8.0
+    #     env:
+    #       MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+    #       MYSQL_DATABASE: $DB_DATABASE
+    #       MYSQL_USER: $DB_USERNAME
+    #       MYSQL_PASSWORD: $DB_PASSWORD
+    #     ports:
+    #       - 3306:3306
+    #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Create Database
         run: |
+          sudo systemctl start mysql.service
           mysql -h $DB_HOST --port $DB_PORT -u $DB_USERNAME -p$DB_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;"
 
       - name: Create test table
